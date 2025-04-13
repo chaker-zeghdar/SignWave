@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignFlow - Learn Sign Language Step by Step</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#8B5CF6'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .progress-bar {
+            height: 6px;
+            background-color: #E5E7EB;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4F46E5;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .video-controls button {
+            transition: all 0.2s ease;
+        }
+        .video-controls button:hover {
+            background-color: #F3F4F6;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #4F46E5;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .custom-checkbox {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D1D5DB;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .custom-checkbox.checked {
+            background-color: #4F46E5;
+            border-color: #4F46E5;
+        }
+        .custom-checkbox.checked::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 6px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #E5E7EB;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .switch-slider {
+            background-color: #4F46E5;
+        }
+        input:checked + .switch-slider:before {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-4 relative z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+          <!-- Logo -->
+          <a href="#" class="text-2xl font-['Pacifico'] text-primary mr-10">SignWave</a>
+      
+          <!-- Desktop Navigation -->
+          <nav class="hidden md:flex space-x-8">
+            <a href="./index.html" class="font-medium text-gray-900 hover:text-primary transition">Home</a>
+            <a href="./lessons.html" class="font-medium text-gray-500 hover:text-primary transition">My Learning</a>
+            <a href="./profile.html" class="font-medium text-gray-500 hover:text-primary transition">Profile</a>
+            <a href="./about.html" class="font-medium text-gray-500 hover:text-primary transition">About</a>
+          </nav>
+      
+          <!-- Icons + Mobile Toggle -->
+          <div class="flex items-center space-x-4">
+            <!-- Notification -->
+            <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
+              <i class="ri-notification-3-line text-gray-600"></i>
+            </div>
+      
+            <!-- User Profile -->
+            <div class="w-10 h-10 flex items-center justify-center rounded-full overflow-hidden">
+              <img src="./img/user.jpg" alt="User profile" class="w-full h-full object-cover">
+            </div>
+      
+            <!-- Mobile Menu Button -->
+            <button id="mobile-toggle" class="md:hidden text-gray-600 w-10 h-10 flex items-center justify-center">
+              <i class="ri-menu-line ri-xl"></i>
+            </button>
+          </div>
+        </div>
+      
+        <!-- Slide-In Mobile Menu -->
+        <div id="mobile-menu" class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+          <div class="p-4 space-y-4">
+            <a href="./index.html" class="block text-gray-700 hover:text-primary">Home</a>
+            <a href="./lessons.html" class="block text-gray-700 hover:text-primary">Lessons</a>
+            <a href="./profile.html" class="block text-gray-700 hover:text-primary">Profile</a>
+            <a href="./about.html" class="block text-gray-700 hover:text-primary">About</a>
+          </div>
+        </div>
+      </header>
+      
+
+    <main class="container mx-auto px-4 py-6">
+        <!-- Progress Bar -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center">
+                    <button class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 mr-3">
+                        <i class="ri-arrow-left-s-line"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold text-gray-800">Basic Greetings - Lesson 1</h2>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Lesson Progress</span>
+                    <span class="text-sm font-medium text-primary">5/10 steps</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 40%;"></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column - Video Player and Controls -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+                            <div class="relative aspect-video bg-gray-900">
+                                <video id="lessonVideo" class="w-full h-full object-cover" src="vd/Greetings in ASL _ ASL - American Sign Language.mp4" poster="poster.jpg"></video>
+                    
+                                <!-- Custom Play Button -->
+                                <div class="absolute inset-0 flex items-center justify-center z-10">
+                                    <button id="playButton" class="w-16 h-16 flex items-center justify-center rounded-full bg-primary bg-opacity-90 text-white">
+                                        <i class="ri-play-fill ri-2x"></i>
+                                    </button>
+                                </div>
+                    
+                                <!-- Progress Bar -->
+                                <div class="absolute bottom-4 left-4 right-4 flex items-center space-x-3 z-10">
+                                    <div class="w-full bg-black bg-opacity-50 rounded-lg p-2">
+                                        <input id="progressBar" type="range" min="0" max="100" value="0" class="w-full">
+                                        <div class="flex justify-between mt-1 text-xs text-white">
+                                            <span id="currentTime">00:00</span>
+                                            <span id="duration">00:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 video-controls flex flex-wrap items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <button class="w-10 h-10 flex items-center justify-center rounded-button text-gray-700">
+                                <i class="ri-rewind-line"></i>
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center rounded-button text-gray-700">
+                                <i class="ri-speed-line"></i>
+                                <span class="ml-1 text-sm">1x</span>
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center rounded-button text-gray-700">
+                                <i class="ri-repeat-one-line"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-4 mt-2 sm:mt-0">
+                            <button class="flex items-center space-x-2 px-3 py-2 rounded-button bg-gray-100 text-gray-700">
+                                <i class="ri-fullscreen-line"></i>
+                                <span class="text-sm whitespace-nowrap">Full Screen</span>
+                            </button>
+                            <button class="flex items-center space-x-2 px-3 py-2 rounded-button bg-gray-100 text-gray-700">
+                                <i class="ri-camera-switch-line"></i>
+                                <span class="text-sm whitespace-nowrap">Side View</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sign Instructions -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">How to Sign "How are you?"</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white font-medium flex-shrink-0 mr-4">1</div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-2">Start with the "How" sign</h4>
+                                <p class="text-gray-600 mb-3">With your dominant hand, form a "C" shape with your fingers. Place your thumb on your chin and your fingers pointing upward. Then pull your hand away from your face in a slight arc motion.</p>
+                                <div class="grid grid-cols-2 gap-4 mt-3">
+                                    <img src="img/howare4.jpg" alt="How sign position" class="rounded-md w-full h-auto">
+                                    <img src="img/howare5.jpg" alt="How sign motion" class="rounded-md w-full h-auto">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white font-medium flex-shrink-0 mr-4">2</div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-2">Sign "You"</h4>
+                                <p class="text-gray-600 mb-3">Point your index finger directly at the person you're addressing. Keep your other fingers closed in a fist. The movement is a simple, direct pointing gesture.</p>
+                                <img src="img/howare6.jpg" alt="You sign" class="rounded-md w-full h-auto">
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start opacity-50">
+                            <div class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-400 text-white font-medium flex-shrink-0 mr-4">3</div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-2">Complete with facial expression</h4>
+                                <p class="text-gray-600">Raise your eyebrows slightly while signing to indicate you're asking a question. This non-manual marker is essential for proper ASL grammar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800">Practice Mode</h3>
+                        <button class="px-4 py-2 bg-primary text-white rounded-button flex items-center space-x-2 whitespace-nowrap">
+                            <i class="ri-camera-line"></i>
+                            <span>Start Practice</span>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-12 h-12 mx-auto flex items-center justify-center rounded-full bg-gray-200 text-gray-500 mb-2">
+                                    <i class="ri-video-line ri-lg"></i>
+                                </div>
+                                <p class="text-gray-500 text-sm">Reference Video</p>
+                            </div>
+                        </div>
+                        <div class="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-12 h-12 mx-auto flex items-center justify-center rounded-full bg-gray-200 text-gray-500 mb-2">
+                                    <i class="ri-user-line ri-lg"></i>
+                                </div>
+                                <p class="text-gray-500 text-sm">Your Camera</p>
+                                <button class="mt-2 px-3 py-1 bg-gray-200 text-gray-700 rounded-button text-sm whitespace-nowrap">Enable Camera</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Enable camera to start practicing. You'll receive real-time feedback on your signing technique.</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-600">Auto-detect</span>
+                            <label class="custom-switch">
+                                <input type="checkbox" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right Column - Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Lesson Details -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Lesson Details</h3>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">Beginner</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500 mb-1">Category</h4>
+                            <p class="text-gray-800">Basic Greetings & Introductions</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500 mb-1">Estimated Time</h4>
+                            <p class="text-gray-800">15 minutes</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500 mb-1">Signs Covered</h4>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">Hello</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">How are you</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">Hi</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">What's up</span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">You good</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-6 border-t border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-medium text-gray-800">Learning Options</h4>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Slow Motion</span>
+                                <label class="custom-switch">
+                                    <input type="checkbox">
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Show Motion Paths</span>
+                                <label class="custom-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Mirror Mode</span>
+                                <label class="custom-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lesson Navigation -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Lesson Steps</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-primary text-white text-xs mr-3">
+                                <i class="ri-check-line"></i>
+                            </div>
+                            <span class="text-gray-800">Introduction to Greetings</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-primary text-white text-xs mr-3">
+                                <i class="ri-check-line"></i>
+                            </div>
+                            <span class="text-gray-800">Signing "Hello"</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-primary text-white text-xs mr-3">
+                                <i class="ri-check-line"></i>
+                            </div>
+                            <span class="text-gray-800">Practice "Hello"</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-primary bg-opacity-10 rounded-lg border-l-4 border-primary">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-primary text-white text-xs mr-3">4</div>
+                            <span class="text-primary font-medium">Signing "How are you?"</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg opacity-60">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-xs mr-3">5</div>
+                            <span class="text-gray-600">Practice "How are you?"</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg opacity-60">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-xs mr-3">6</div>
+                            <span class="text-gray-600">Signing "Hi"</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg opacity-60">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-xs mr-3">7</div>
+                            <span class="text-gray-600">Practice "Hi"</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg opacity-60">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-xs mr-3">8</div>
+                            <span class="text-gray-600">Signing "What's up"</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg opacity-60">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-xs mr-3">9</div>
+                            <span class="text-gray-600">Practice "What's up"</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg opacity-60">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-xs mr-3">10</div>
+                            <span class="text-gray-600">Signing "You Good"</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg opacity-60">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-xs mr-3">11</div>
+                            <span class="text-gray-600">Practice "You Good"</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg opacity-60">
+                            <div class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-xs mr-3">12</div>
+                            <span class="text-gray-600">Final Practice</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tips & Common Mistakes -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Tips & Common Mistakes</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 bg-yellow-50 rounded-lg">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600 flex-shrink-0 mr-3">
+                                    <i class="ri-error-warning-line"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-1">Common Mistake</h4>
+                                    <p class="text-gray-600 text-sm">Don't place your "How" sign too far from your chin. Keep it close for clear communication.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-blue-50 rounded-lg">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 flex-shrink-0 mr-3">
+                                    <i class="ri-lightbulb-line"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-1">Pro Tip</h4>
+                                    <p class="text-gray-600 text-sm">Remember that facial expressions are just as important as hand movements in ASL. Practice in front of a mirror to see both.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 rounded-lg">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mr-3">
+                                    <i class="ri-user-voice-line"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-1">Community Tip</h4>
+                                    <p class="text-gray-600 text-sm">"I found it helpful to practice the full phrase slowly at first, then gradually speed up as I got more comfortable." - Rebecca M.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="mt-8 flex justify-between">
+            <button class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 flex items-center space-x-2 whitespace-nowrap">
+                <i class="ri-arrow-left-line"></i>
+                <span>Previous: "Hello"</span>
+            </button>
+            <button class="px-4 py-2 bg-primary text-white rounded-button flex items-center space-x-2 whitespace-nowrap">
+                <span>Next: Practice "How are you?"</span>
+                <i class="ri-arrow-right-line"></i>
+            </button>
+        </div>
+    </main>
+
+    <script>
+        // Mobile Menu Toggle
+  const menuBtn = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+
+  const video = document.getElementById('lessonVideo');
+  const playBtn = document.getElementById('playButton');
+  const progressBar = document.getElementById('progressBar');
+  const currentTime = document.getElementById('currentTime');
+  const durationTime = document.getElementById('duration');
+
+  // Format time helper
+  function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+  }
+
+  // Play button
+  playBtn.addEventListener('click', () => {
+    video.play();
+    playBtn.style.display = 'none';
+  });
+
+  // Update progress bar
+  video.addEventListener('timeupdate', () => {
+    const percentage = (video.currentTime / video.duration) * 100;
+    progressBar.value = percentage;
+    currentTime.textContent = formatTime(video.currentTime);
+  });
+
+  // Show duration when video is ready
+  video.addEventListener('loadedmetadata', () => {
+    durationTime.textContent = formatTime(video.duration);
+  });
+
+  // Allow seeking
+  progressBar.addEventListener('input', () => {
+    const newTime = (progressBar.value / 100) * video.duration;
+    video.currentTime = newTime;
+  });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Custom checkbox functionality
+            const checkboxes = document.querySelectorAll('.custom-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('click', function() {
+                    this.classList.toggle('checked');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

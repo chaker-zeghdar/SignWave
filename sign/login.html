@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#818CF8'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .form-container {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .form-slide {
+            transition: all 0.3s ease;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .floating-label {
+            position: absolute;
+            left: 1rem;
+            top: 0.85rem;
+            transition: all 0.2s ease;
+            pointer-events: none;
+            color: #9ca3af;
+        }
+        
+        .auth-input:focus ~ .floating-label,
+        .auth-input:not(:placeholder-shown) ~ .floating-label {
+            transform: translateY(-1.4rem) scale(0.85);
+            color: #4F46E5;
+            background-color: white;
+            padding: 0 0.25rem;
+        }
+        
+        .auth-input {
+            transition: border-color 0.2s ease;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .auth-input:focus {
+            border-color: #4F46E5;
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+        }
+        
+        .auth-button {
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        
+        .auth-button:hover {
+            transform: translateY(-1px);
+        }
+        
+        .social-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .toggle-btn {
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        
+        .toggle-btn.active {
+            color: #4F46E5;
+            border-bottom: 2px solid #4F46E5;
+        }
+        
+        .password-toggle {
+            cursor: pointer;
+        }
+        
+        .strength-indicator {
+            height: 4px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .custom-checkbox {
+            position: relative;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .custom-checkbox.checked {
+            background-color: #4F46E5;
+            border-color: #4F46E5;
+        }
+        
+        .custom-checkbox.checked::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .shake {
+            animation: shake 0.4s ease;
+        }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md mx-auto">
+        <div class="text-center mb-8 fade-in" style="animation-delay: 0.1s;">
+            <a href="#" class="text-2xl font-['Pacifico'] text-primary mr-10">SignWave</a>
+            <h2 id="welcome-text" class="text-2xl font-bold text-gray-800">Welcome Back</h2>
+            <p id="subtitle-text" class="text-gray-500 mt-2">Sign in to access your account</p>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden fade-in" style="animation-delay: 0.2s;">
+            <div class="flex border-b border-gray-100">
+                <button id="signin-toggle" class="toggle-btn active flex-1 py-4 font-medium text-center">Sign In</button>
+                <button id="signup-toggle" class="toggle-btn flex-1 py-4 font-medium text-center text-gray-500">Sign Up</button>
+            </div>
+            
+            <div class="relative overflow-hidden">
+                <div id="forms-container" class="flex transition-all duration-300 ease-in-out">
+                    <!-- Sign In Form -->
+                    <div id="signin-form" class="form-slide w-full p-6">
+                        <form>
+                            <div class="space-y-5">
+                                <div class="input-group">
+                                    <input type="email" id="email" class="auth-input w-full px-4 py-3 rounded focus:outline-none" placeholder=" " required>
+                                    <label for="email" class="floating-label">Email Address</label>
+                                </div>
+                                
+                                <div class="input-group relative">
+                                    <input type="password" id="password" class="auth-input w-full px-4 py-3 rounded focus:outline-none" placeholder=" " required>
+                                    <label for="password" class="floating-label">Password</label>
+                                    <div class="password-toggle absolute right-3 top-3 w-6 h-6 flex items-center justify-center text-gray-400">
+                                        <i class="ri-eye-line"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="checkbox-container">
+                                        <div id="remember-checkbox" class="custom-checkbox mr-2"></div>
+                                        <label for="remember-checkbox" class="text-sm text-gray-600 cursor-pointer">Remember me</label>
+                                    </div>
+                                    <a href="#" class="text-sm font-medium text-primary hover:text-primary/80">Forgot Password?</a>
+                                </div>
+                                
+                                <button onclick="window.location.href='./lessons.html'" type="submit" class="auth-button bg-primary hover:bg-primary/90 text-white w-full py-3 rounded-button font-medium relative flex items-center justify-center whitespace-nowrap">
+                                    <span>Sign In</span>
+                                    <div class="spinner ml-2"></div>
+                                </button>
+                                
+                                <div class="relative flex items-center justify-center my-6">
+                                    <div class="border-t border-gray-200 absolute w-full"></div>
+                                    <span class="bg-white px-3 text-sm text-gray-500 relative">or continue with</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-3">
+                                    <button type="button" class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-button hover:bg-gray-50 whitespace-nowrap">
+                                        <div class="w-5 h-5 flex items-center justify-center">
+                                            <i class="ri-google-fill text-lg"></i>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-button hover:bg-gray-50 whitespace-nowrap">
+                                        <div class="w-5 h-5 flex items-center justify-center">
+                                            <i class="ri-facebook-fill text-lg"></i>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-button hover:bg-gray-50 whitespace-nowrap">
+                                        <div class="w-5 h-5 flex items-center justify-center">
+                                            <i class="ri-apple-fill text-lg"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Sign Up Form -->
+                    <div id="signup-form" class="form-slide w-full p-6 absolute left-full top-0">
+                        <form>
+                            <div class="space-y-5">
+                                <div class="input-group">
+                                    <input type="text" id="fullname" class="auth-input w-full px-4 py-3 rounded focus:outline-none" placeholder=" " required>
+                                    <label for="fullname" class="floating-label">Full Name</label>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <input type="email" id="signup-email" class="auth-input w-full px-4 py-3 rounded focus:outline-none" placeholder=" " required>
+                                    <label for="signup-email" class="floating-label">Email Address</label>
+                                </div>
+                                
+                                <div class="input-group relative">
+                                    <input type="password" id="signup-password" class="auth-input w-full px-4 py-3 rounded focus:outline-none" placeholder=" " required>
+                                    <label for="signup-password" class="floating-label">Password</label>
+                                    <div class="password-toggle absolute right-3 top-3 w-6 h-6 flex items-center justify-center text-gray-400">
+                                        <i class="ri-eye-line"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <div class="flex justify-between text-xs text-gray-500">
+                                        <span>Password strength:</span>
+                                        <span id="strength-text">Weak</span>
+                                    </div>
+                                    <div class="bg-gray-200 rounded-full h-1 overflow-hidden">
+                                        <div id="strength-indicator" class="strength-indicator bg-red-500 h-full" style="width: 25%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="input-group relative">
+                                    <input type="password" id="confirm-password" class="auth-input w-full px-4 py-3 rounded focus:outline-none" placeholder=" " required>
+                                    <label for="confirm-password" class="floating-label">Confirm Password</label>
+                                    <div class="password-toggle absolute right-3 top-3 w-6 h-6 flex items-center justify-center text-gray-400">
+                                        <i class="ri-eye-line"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="checkbox-container">
+                                    <div id="terms-checkbox" class="custom-checkbox mr-2"></div>
+                                    <label for="terms-checkbox" class="text-sm text-gray-600 cursor-pointer">
+                                        I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a>
+                                    </label>
+                                </div>
+
+                                
+                                <button type="submit" class="auth-button bg-primary hover:bg-primary/90 text-white w-full py-3 rounded-button font-medium relative flex items-center justify-center whitespace-nowrap">
+                                    <span>Create Account</span>
+                                    <div class="spinner ml-2"></div>
+                                </button>
+                                
+                                <div class="relative flex items-center justify-center my-6">
+                                    <div class="border-t border-gray-200 absolute w-full"></div>
+                                    <span class="bg-white px-3 text-sm text-gray-500 relative">or sign up with</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-3">
+                                    <button type="button" class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-button hover:bg-gray-50 whitespace-nowrap">
+                                        <div class="w-5 h-5 flex items-center justify-center">
+                                            <i class="ri-google-fill text-lg"></i>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-button hover:bg-gray-50 whitespace-nowrap">
+                                        <div class="w-5 h-5 flex items-center justify-center">
+                                            <i class="ri-facebook-fill text-lg"></i>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="social-btn flex items-center justify-center py-2.5 border border-gray-200 rounded-button hover:bg-gray-50 whitespace-nowrap">
+                                        <div class="w-5 h-5 flex items-center justify-center">
+                                            <i class="ri-apple-fill text-lg"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-6 text-sm text-gray-500 fade-in" style="animation-delay: 0.3s;">
+            <p>© 2025 logo. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signinToggle = document.getElementById('signin-toggle');
+            const signupToggle = document.getElementById('signup-toggle');
+            const formsContainer = document.getElementById('forms-container');
+            const signinForm = document.getElementById('signin-form');
+            const signupForm = document.getElementById('signup-form');
+            const welcomeText = document.getElementById('welcome-text');
+            const subtitleText = document.getElementById('subtitle-text');
+            
+            // Toggle between sign in and sign up forms
+            signinToggle.addEventListener('click', function() {
+                signinToggle.classList.add('active');
+                signupToggle.classList.remove('active');
+                formsContainer.style.transform = 'translateX(0)';
+                welcomeText.textContent = 'Welcome Back';
+                subtitleText.textContent = 'Sign in to access your account';
+            });
+            
+            signupToggle.addEventListener('click', function() {
+                signupToggle.classList.add('active');
+                signinToggle.classList.remove('active');
+                formsContainer.style.transform = 'translateX(-100%)';
+                welcomeText.textContent = 'Create Account';
+                subtitleText.textContent = 'Sign up to get started with us';
+            });
+            
+            // Password visibility toggle
+            const passwordToggles = document.querySelectorAll('.password-toggle');
+            
+            passwordToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const passwordField = this.previousElementSibling.previousElementSibling;
+                    const icon = this.querySelector('i');
+                    
+                    if (passwordField.type === 'password') {
+                        passwordField.type = 'text';
+                        icon.classList.remove('ri-eye-line');
+                        icon.classList.add('ri-eye-off-line');
+                    } else {
+                        passwordField.type = 'password';
+                        icon.classList.remove('ri-eye-off-line');
+                        icon.classList.add('ri-eye-line');
+                    }
+                });
+            });
+            
+            // Custom checkbox functionality
+            const rememberCheckbox = document.getElementById('remember-checkbox');
+            const termsCheckbox = document.getElementById('terms-checkbox');
+            
+            rememberCheckbox.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+            
+            termsCheckbox.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+            
+            // Password strength indicator
+            const signupPassword = document.getElementById('signup-password');
+            const strengthIndicator = document.getElementById('strength-indicator');
+            const strengthText = document.getElementById('strength-text');
+            
+            signupPassword.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                if (password.length >= 8) strength += 25;
+                if (password.match(/[A-Z]/)) strength += 25;
+                if (password.match(/[0-9]/)) strength += 25;
+                if (password.match(/[^A-Za-z0-9]/)) strength += 25;
+                
+                strengthIndicator.style.width = strength + '%';
+                
+                if (strength <= 25) {
+                    strengthIndicator.style.backgroundColor = '#ef4444';
+                    strengthText.textContent = 'Weak';
+                } else if (strength <= 50) {
+                    strengthIndicator.style.backgroundColor = '#f97316';
+                    strengthText.textContent = 'Fair';
+                } else if (strength <= 75) {
+                    strengthIndicator.style.backgroundColor = '#eab308';
+                    strengthText.textContent = 'Good';
+                } else {
+                    strengthIndicator.style.backgroundColor = '#22c55e';
+                    strengthText.textContent = 'Strong';
+                }
+            });
+            
+            // Form submission with loading state
+            const forms = document.querySelectorAll('form');
+            
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const button = this.querySelector('button[type="submit"]');
+                    const buttonText = button.querySelector('span');
+                    const spinner = button.querySelector('.spinner');
+                    
+                    // Show loading state
+                    buttonText.textContent = button.textContent.includes('Sign In') ? 'Signing In...' : 'Creating Account...';
+                    spinner.style.display = 'block';
+                    button.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        // Reset button state
+                        buttonText.textContent = button.textContent.includes('Signing In') ? 'Sign In' : 'Create Account';
+                        spinner.style.display = 'none';
+                        button.disabled = false;
+                        
+                        // Show success message (in a real app, you'd redirect or show a success message)
+                        alert(button.textContent.includes('Signing In') ? 'Successfully signed in!' : 'Account created successfully!');
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

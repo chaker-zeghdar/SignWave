@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lessons</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#10B981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .sign-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sign-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sign-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #4F46E5, #10B981);
+        }
+        
+        .hand-animation {
+            transition: transform 0.5s ease;
+        }
+        
+        .sign-card:hover .hand-animation {
+            transform: scale(1.1);
+        }
+        
+        .progress-path {
+            stroke-dasharray: 283;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        
+        .progress-node {
+            transition: all 0.3s ease;
+        }
+        
+        .progress-node:hover {
+            transform: scale(1.2);
+            filter: brightness(1.1);
+        }
+        
+        .path-line {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: dash 1.5s ease-in-out forwards;
+        }
+        
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        .card-animation {
+            animation: cardAppear 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .search-input {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            width: 100%;
+            outline: none;
+        }
+        
+        .search-input:focus {
+            border-color: #4F46E5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+        
+        .category-tab {
+            transition: all 0.2s ease;
+        }
+        
+        .category-tab.active {
+            background-color: #4F46E5;
+            color: white;
+        }
+        
+        .custom-checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .custom-checkbox:checked {
+            background-color: #4F46E5;
+            border-color: #4F46E5;
+        }
+        
+        .custom-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .custom-range {
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            outline: none;
+        }
+        
+        .custom-range::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #4F46E5;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .custom-range::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .switch-slider {
+            background-color: #4F46E5;
+        }
+        
+        input:checked + .switch-slider:before {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+
+
+
+
+
+<body>
+    <header class="bg-white shadow-sm py-4 relative z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+          <!-- Logo -->
+          <a href="#" class="text-2xl font-['Pacifico'] text-primary mr-10">SignWave</a>
+      
+          <!-- Desktop Navigation -->
+          <nav class="hidden md:flex space-x-8">
+            <a href="./index.html" class="font-medium text-gray-900 hover:text-primary transition">Home</a>
+            <a href="./lessons.html" class="font-medium text-gray-500 hover:text-primary transition">My Learning</a>
+            <a href="./profile.html" class="font-medium text-gray-500 hover:text-primary transition">Profile</a>
+            <a href="./about.html" class="font-medium text-gray-500 hover:text-primary transition">About</a>
+          </nav>
+      
+          <!-- Icons + Mobile Toggle -->
+          <div class="flex items-center space-x-4">
+            <!-- Notification -->
+            <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
+              <i class="ri-notification-3-line text-gray-600"></i>
+            </div>
+      
+            <!-- User Profile -->
+            <div class="w-10 h-10 flex items-center justify-center rounded-full overflow-hidden">
+              <img src="./img/user.jpg" alt="User profile" class="w-full h-full object-cover">
+            </div>
+      
+            <!-- Mobile Menu Button -->
+            <button id="mobile-toggle" class="md:hidden text-gray-600 w-10 h-10 flex items-center justify-center">
+              <i class="ri-menu-line ri-xl"></i>
+            </button>
+          </div>
+        </div>
+      
+        <!-- Slide-In Mobile Menu -->
+        <div id="mobile-menu" class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+          <div class="p-4 space-y-4">
+            <a href="./index.html" class="block text-gray-700 hover:text-primary">Home</a>
+            <a href="./lessons.html" class="block text-gray-700 hover:text-primary">Lessons</a>
+            <a href="./profile.html" class="block text-gray-700 hover:text-primary">Profile</a>
+            <a href="./about.html" class="block text-gray-700 hover:text-primary">About</a>
+          </div>
+        </div>
+      </header>
+
+    <main class="container mx-auto px-4 py-8 flex flex-col md:flex-row min-h-screen">
+        <!-- Left Section (60%) - Interactive Cards -->
+        <section class="w-full md:w-3/5 pr-0 md:pr-6">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Sign Language Learning</h1>
+                <p class="text-gray-600">Master American Sign Language (ASL) through interactive flashcards and guided practice.</p>
+            </div>
+            
+            <!-- Search and Filter -->
+            <div class="mb-6">
+                <div class="relative mb-4">
+                    <input type="text" placeholder="Search signs, letters or words..." class="search-input pl-10">
+                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-2 overflow-x-auto pb-2">
+                    <button class="category-tab active whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium !rounded-button">All Signs</button>
+                    <button class="category-tab whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 !rounded-button">Alphabet</button>
+                    <button class="category-tab whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 !rounded-button">Numbers</button>
+                    <button class="category-tab whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 !rounded-button">Common Phrases</button>
+                    <button class="category-tab whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 !rounded-button">Emotions</button>
+                    <button class="category-tab whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 !rounded-button">Family</button>
+                </div>
+            </div>
+            
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-y-auto max-h-[calc(100vh-240px)]">
+                <!-- Card 1 -->
+                <div class="sign-card card-animation bg-white rounded-lg shadow-md" style="animation-delay: 0.1s;">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl">A</div>
+                            <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-800 rounded-full">Beginner</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Letter A</h3>
+                        <p class="text-sm text-gray-600 mb-4">Make a fist with your thumb resting on the side.</p>
+                        
+                        <div class="flex justify-center mb-4">
+                            <div class="hand-animation w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center">
+                                <img src="./img/a.jpg" alt="Sign for letter A" class="w-24 h-24 object-contain">
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-volume-up-line mr-1"></i> Pronunciation
+                            </button>
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-information-line mr-1"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-1.5 w-full bg-gray-100">
+                        <div class="h-full bg-green-500 rounded-r-full" style="width: 100%;"></div>
+                    </div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="sign-card card-animation bg-white rounded-lg shadow-md" style="animation-delay: 0.2s;">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl">B</div>
+                            <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-800 rounded-full">Beginner</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Letter B</h3>
+                        <p class="text-sm text-gray-600 mb-4">Hold your hand flat with fingers together and thumb tucked.</p>
+                        
+                        <div class="flex justify-center mb-4">
+                            <div class="hand-animation w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center">
+                                <img src="./img/b.jpg" alt="Sign for letter B" class="w-24 h-24 object-contain">
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-volume-up-line mr-1"></i> Pronunciation
+                            </button>
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-information-line mr-1"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-1.5 w-full bg-gray-100">
+                        <div class="h-full bg-green-500 rounded-r-full" style="width: 100%;"></div>
+                    </div>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="sign-card card-animation bg-white rounded-lg shadow-md" style="animation-delay: 0.3s;">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl">C</div>
+                            <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-800 rounded-full">Beginner</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Letter C</h3>
+                        <p class="text-sm text-gray-600 mb-4">Curve your hand in a C shape with fingers together.</p>
+                        
+                        <div class="flex justify-center mb-4">
+                            <div class="hand-animation w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center">
+                                <img src="./img/c.jpg" alt="Sign for letter C" class="w-24 h-24 object-contain">
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-volume-up-line mr-1"></i> Pronunciation
+                            </button>
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-information-line mr-1"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-1.5 w-full bg-gray-100">
+                        <div class="h-full bg-green-500 rounded-r-full" style="width: 85%;"></div>
+                    </div>
+                </div>
+                
+                <!-- Card 4 -->
+                <div class="sign-card card-animation bg-white rounded-lg shadow-md" style="animation-delay: 0.4s;">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl">D</div>
+                            <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-800 rounded-full">Beginner</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Letter D</h3>
+                        <p class="text-sm text-gray-600 mb-4">Curve your middle, ring, and pinky fingers with index pointing up.</p>
+                        
+                        <div class="flex justify-center mb-4">
+                            <div class="hand-animation w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center">
+                                <img src="./img/d.jpg" alt="Sign for letter D" class="w-24 h-24 object-contain">
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-volume-up-line mr-1"></i> Pronunciation
+                            </button>
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-information-line mr-1"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-1.5 w-full bg-gray-100">
+                        <div class="h-full bg-green-500 rounded-r-full" style="width: 70%;"></div>
+                    </div>
+                </div>
+                
+                <!-- Card 5 -->
+                <div class="sign-card card-animation bg-white rounded-lg shadow-md" style="animation-delay: 0.5s;">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl">E</div>
+                            <span class="text-xs font-medium px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">In Progress</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Letter E</h3>
+                        <p class="text-sm text-gray-600 mb-4">Curl your fingers in toward your palm with thumb resting.</p>
+                        
+                        <div class="flex justify-center mb-4">
+                            <div class="hand-animation w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center">
+                                <img src="./img/e.jpg" alt="Sign for letter E" class="w-24 h-24 object-contain">
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-volume-up-line mr-1"></i> Pronunciation
+                            </button>
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-information-line mr-1"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-1.5 w-full bg-gray-100">
+                        <div class="h-full bg-yellow-500 rounded-r-full" style="width: 45%;"></div>
+                    </div>
+                </div>
+                
+                <!-- Card 6 -->
+                <div class="sign-card card-animation bg-white rounded-lg shadow-md" style="animation-delay: 0.6s;">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl">F</div>
+                            <span class="text-xs font-medium px-2 py-1 bg-gray-100 text-gray-800 rounded-full">Not Started</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Letter F</h3>
+                        <p class="text-sm text-gray-600 mb-4">Touch your thumb and index finger, other fingers extended.</p>
+                        
+                        <div class="flex justify-center mb-4">
+                            <div class="hand-animation w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center">
+                                <img src="./img/f.jpg" alt="Sign for letter F" class="w-24 h-24 object-contain">
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-volume-up-line mr-1"></i> Pronunciation
+                            </button>
+                            <button class="flex items-center text-sm font-medium text-primary !rounded-button">
+                                <i class="ri-information-line mr-1"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-1.5 w-full bg-gray-100">
+                        <div class="h-full bg-gray-300 rounded-r-full" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Divider -->
+        <div class="hidden md:block w-px bg-gray-200 mx-6 shadow-sm"></div>
+        
+        <!-- Right Section (40%) - Learning Map -->
+        <section class="w-full md:w-2/5 mt-8 md:mt-0">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-900">Your Learning Progress</h2>
+                    <div class="relative w-24 h-24">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" stroke-width="8"></circle>
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#4F46E5" stroke-width="8" stroke-linecap="round" class="progress-path" style="stroke-dashoffset: 85"></circle>
+                            <text x="50" y="50" text-anchor="middle" dominant-baseline="middle" font-size="20" font-weight="bold" fill="#4F46E5">70%</text>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-500 mb-1">Current Streak</div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center text-yellow-500 mr-2">
+                                <i class="ri-fire-fill"></i>
+                            </div>
+                            <span class="text-xl font-bold text-gray-900">12 Days</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-500 mb-1">Signs Learned</div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
+                                <i class="ri-hand-heart-line"></i>
+                            </div>
+                            <span class="text-xl font-bold text-gray-900">18 / 26</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-500 mb-1">Practice Time</div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center text-green-500 mr-2">
+                                <i class="ri-time-line"></i>
+                            </div>
+                            <span class="text-xl font-bold text-gray-900">5.2 hrs</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-500 mb-1">Accuracy</div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center text-blue-500 mr-2">
+                                <i class="ri-check-double-line"></i>
+                            </div>
+                            <span class="text-xl font-bold text-gray-900">92%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Next Milestone</h3>
+                    <div class="bg-primary/5 rounded-lg p-4 border border-primary/20">
+                        <div class="flex items-center mb-2">
+                            <div class="w-8 h-8 flex items-center justify-center bg-primary rounded-full text-white mr-3">
+                                <i class="ri-award-line"></i>
+                            </div>
+                            <h4 class="font-medium text-gray-900">Complete Alphabet Mastery</h4>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Learn all 26 letters of the ASL alphabet with at least 90% accuracy.</p>
+                        <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary rounded-full" style="width: 70%;"></div>
+                        </div>
+                        <div class="flex justify-between mt-1">
+                            <span class="text-xs text-gray-500">18/26 letters</span>
+                            <span class="text-xs text-gray-500">70% complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Learning Path</h2>
+                
+                <div class="relative">
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                    
+                    <!-- Path Node 1 -->
+                    <div class="relative flex mb-6">
+                        <div class="progress-node w-8 h-8 flex items-center justify-center bg-green-500 rounded-full text-white z-10">
+                            <i class="ri-check-line"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="bg-green-50 rounded-lg p-4 border border-green-100">
+                                <h3 class="font-medium text-gray-900 mb-1">Alphabet Basics</h3>
+                                <p class="text-sm text-gray-600 mb-2">Learn the first 10 letters (A-J) of the ASL alphabet.</p>
+                                <div class="flex items-center text-green-600 text-sm">
+                                    <i class="ri-check-double-line mr-1"></i>
+                                    <span>Completed on April 5, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Path Node 2 -->
+                    <div class="relative flex mb-6">
+                        <div class="progress-node w-8 h-8 flex items-center justify-center bg-yellow-500 rounded-full text-white z-10">
+                            <i class="ri-time-line"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-100">
+                                <h3 class="font-medium text-gray-900 mb-1">Alphabet Intermediate</h3>
+                                <p class="text-sm text-gray-600 mb-2">Master the next set of letters (K-T) in the ASL alphabet.</p>
+                                <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
+                                    <div class="h-full bg-yellow-500 rounded-full" style="width: 80%;"></div>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-xs text-gray-500">8/10 letters</span>
+                                    <span class="text-xs text-gray-500">80% complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Path Node 3 -->
+                    <div class="relative flex mb-6">
+                        <div class="progress-node w-8 h-8 flex items-center justify-center bg-gray-300 rounded-full text-white z-10">
+                            <i class="ri-lock-line"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h3 class="font-medium text-gray-900 mb-1">Alphabet Advanced</h3>
+                                <p class="text-sm text-gray-600 mb-2">Complete the final letters (U-Z) and practice full alphabet fluency.</p>
+                                <button class="mt-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium !rounded-button">Unlock Next</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Path Node 4 -->
+                    <div class="relative flex">
+                        <div class="progress-node w-8 h-8 flex items-center justify-center bg-gray-300 rounded-full text-white z-10">
+                            <i class="ri-lock-line"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h3 class="font-medium text-gray-900 mb-1">Common Words & Phrases</h3>
+                                <p class="text-sm text-gray-600">Learn everyday words and phrases to start basic conversations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation for cards
+            const cards = document.querySelectorAll('.card-animation');
+            cards.forEach(card => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, parseInt(card.style.animationDelay.replace('s', '')) * 1000);
+            });
+            
+            // Category tabs functionality
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    categoryTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+
+
+        const toggleBtn = document.getElementById('mobile-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  toggleBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('-translate-x-full');
+    mobileMenu.classList.toggle('translate-x-0');
+  });
+    </script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignWave - Learn Sign Language Interactively</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#818CF8'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body class="bg-white min-h-screen">
+    <!-- Header Section -->
+    <header class="w-full bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="flex items-center">
+                <a href="#" class="text-2xl font-['Pacifico'] text-primary mr-10">SignWave</a>
+              </div>
+              <!-- Desktop Navbar -->
+              <nav class="hidden md:flex space-x-8">
+                <a href="./index.html" class="font-medium text-gray-900 hover:text-primary transition">Home</a>
+                <a href="./lessons.html" class="font-medium text-gray-500 hover:text-primary transition">My Learning</a>
+                <a href="./profile.html" class="font-medium text-gray-500 hover:text-primary transition">Profile</a>
+                <a href="./about.html" class="font-medium text-gray-500 hover:text-primary transition">About</a>
+              </nav>
+            </div>
+          
+            <!-- Buttons Section -->
+            <div class="flex items-center space-x-4">
+              <button class="text-gray-700 hover:text-primary transition hidden md:flex items-center justify-center w-10 h-10">
+                <i class="ri-notification-3-line ri-lg"></i>
+              </button>
+              <button onclick="window.location.href='./login.html'" class="bg-white text-primary border border-primary px-4 py-2 rounded-button font-medium hover:bg-primary hover:text-white transition whitespace-nowrap">Sign In</button>
+              <button onclick="window.location.href='./login.html'" class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Register</button>
+          
+              <!-- Mobile Menu Button -->
+              <button id="menu-btn" class="md:hidden text-gray-700 w-10 h-10 flex items-center justify-center">
+                <i class="ri-menu-line ri-lg"></i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Mobile Nav -->
+          <div id="mobile-nav" class="md:hidden fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
+            <div class="p-4">
+              <a href="./index.html" class="block py-2 text-gray-900 hover:text-primary">Home</a>
+              <a href="./lessons.html" class="block py-2 text-gray-900 hover:text-primary">Lessons</a>
+              <a href="./profile.html" class="block py-2 text-gray-900 hover:text-primary">Profile</a>
+              <a href="#" class="block py-2 text-gray-900 hover:text-primary">About</a>
+            </div>
+          </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <img id="cover" src="./img/cover2.jpg" alt="Cover Image" class="w-full h-96 object-cover object-center" loading="lazy">
+    <section  class="hero-section w-full relative" >
+        <div class="hero-content w-full py-20 md:py-32">
+            <div class="container mx-auto px-4">
+                <div class="max-w-xl">
+                    <h1 class="text-4xl md:text-5xl text-white font-bold text-gray-900 mb-4">Learn Sign Language Interactive & Easy</h1>
+                    <p class="text-lg text-gray-700 text-white mb-8">Master sign language through engaging videos, interactive lessons,
+                         and fun quizzes. Perfect for beginners and anyone wanting to communicate effectively.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="window.location.href='./login.html'" class="bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">
+                            Get Started Free
+                        </button>
+                        <button class="bg-white text-gray-800 border border-gray-200 px-6 py-3 rounded-button font-medium hover:bg-gray-50 transition flex items-center justify-center whitespace-nowrap">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-play-circle-line"></i>
+                            </div>
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Paths Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Choose Your Learning Path</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Select the journey that matches your goals and current skill level. Each path is designed to build your confidence and fluency.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Beginner Basics -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:translate-y-[-4px]">
+                    <div class="h-48 bg-gray-200 relative">
+                        <img src="./img/1.jpg" alt="Beginner Basics" class="w-full h-full object-cover object-top">
+                        <div class="absolute top-4 left-4 bg-white/90 text-primary text-xs font-medium px-2 py-1 rounded-full">Beginner</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Beginner Basics</h3>
+                        <p class="text-gray-600 mb-4">Master the fundamentals of sign language with our comprehensive beginner course.</p>
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-video-line"></i>
+                                </div>
+                                <span>24 lessons</span>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-medium">Progress</span>
+                                <span>0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <button onclick="window.location.href='./lessons.html'" class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Start Learning</button>
+                    </div>
+                </div>
+                
+                <!-- Everyday Communication -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:translate-y-[-4px]">
+                    <div class="h-48 bg-gray-200 relative">
+                        <img src="./img/2.jpg" alt="Everyday Communication" class="w-full h-full object-cover object-top">
+                        <div class="absolute top-4 left-4 bg-white/90 text-yellow-600 text-xs font-medium px-2 py-1 rounded-full">Intermediate</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Everyday Communication</h3>
+                        <p class="text-gray-600 mb-4">Learn practical signs for daily conversations and common situations.</p>
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-video-line"></i>
+                                </div>
+                                <span>32 lessons</span>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-medium">Progress</span>
+                                <span>0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <button onclick="window.location.href='./lesson1.html'" class="w-full bg-primary text-white py-2 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Start Learning</button>
+                    </div>
+                </div>
+                
+                <!-- Advanced Conversations -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:translate-y-[-4px]">
+                    <div class="h-48 bg-gray-200 relative">
+                        <img src="./img/3.jpg" alt="Advanced Conversations" class="w-full h-full object-cover object-top">
+                        <div class="absolute top-4 left-4 bg-white/90 text-red-600 text-xs font-medium px-2 py-1 rounded-full">Advanced</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Advanced Conversations</h3>
+                        <p class="text-gray-600 mb-4">Develop fluency with complex topics and nuanced expressions.</p>
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-video-line"></i>
+                                </div>
+                                <span>40 lessons</span>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-medium">Progress</span>
+                                <span>0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <button class="w-full bg-gray-200 text-gray-500 py-2 rounded-button font-medium cursor-not-allowed whitespace-nowrap">Unlock After Basics</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Interactive Practice Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Practice What You've Learned</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Reinforce your skills with our interactive exercises and quizzes designed to help you master sign language.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Video Exercises -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-64 bg-gray-200 relative">
+                        <img src="./img/prcts.jpg" alt="Video Exercises" class="w-full h-full object-cover object-top">
+                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
+                                <div class="w-10 h-10 flex items-center justify-center text-primary">
+                                    <i class="ri-play-fill ri-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Video Practice Exercises</h3>
+                        <p class="text-gray-600 mb-4">Follow along with our video exercises to practice your signing skills and receive instant feedback.</p>
+                        <div class="mb-5">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-medium">Weekly Goal</span>
+                                <span>3 of 5 completed</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        <button class="w-full bg-primary text-white py-3 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Continue Practice</button>
+                    </div>
+                </div>
+                
+                <!-- Interactive Quizzes -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-64 bg-gray-200 relative">
+                        <img src="https://readdy.ai/api/search-image?query=Person%20taking%20a%20sign%20language%20quiz%20on%20a%20digital%20device.%20The%20image%20shows%20someone%20interacting%20with%20a%20tablet%20or%20computer%20screen%20displaying%20a%20sign%20language%20quiz%20or%20test.%20The%20setting%20is%20a%20bright%2C%20modern%20environment.%20Professional%20photography%20showing%20an%20engaged%20learner%20selecting%20answers%20or%20matching%20signs%20to%20meanings%2C%20focused%20on%20the%20interactive%20learning%20experience%20with%20visible%20quiz%20interface%20on%20the%20screen.&width=800&height=500&seq=12&orientation=landscape" alt="Interactive Quizzes" class="w-full h-full object-cover object-top">
+                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <div class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                                    <span class="font-bold text-2xl">Test Your Knowledge</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Interactive Quizzes</h3>
+                        <p class="text-gray-600 mb-4">Challenge yourself with our interactive quizzes to test your comprehension and retention.</p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-medal-line"></i>
+                                </div>
+                                <span>Alphabet Master</span>
+                            </div>
+                            <div class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-medal-line"></i>
+                                </div>
+                                <span>Greeting Pro</span>
+                            </div>
+                            <div class="bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-lock-line"></i>
+                                </div>
+                                <span>Conversation Expert</span>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-primary text-white py-3 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Take a Quiz</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Continue Where You Left Off</h3>
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                    <div class="w-full md:w-48 h-32 bg-gray-200 rounded flex-shrink-0 relative">
+                        <img src="https://readdy.ai/api/search-image?query=Close-up%20of%20hands%20forming%20common%20greetings%20in%20sign%20language.%20The%20image%20shows%20clear%2C%20well-lit%20hands%20demonstrating%20the%20sign%20for%20hello%20against%20a%20clean%20light%20blue%20background.%20Professional%20photography%20with%20soft%20lighting%2C%20minimalist%20style%2C%20focused%20on%20the%20greeting%20gesture%20with%20plenty%20of%20negative%20space.&width=400&height=300&seq=13&orientation=landscape" alt="Common Greetings" class="w-full h-full object-cover object-top rounded">
+                        <div class="absolute inset-0 bg-black/20 rounded flex items-center justify-center">
+                            <div class="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center">
+                                <div class="w-6 h-6 flex items-center justify-center text-primary">
+                                    <i class="ri-play-fill ri-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-3">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900">Common Greetings</h4>
+                                <p class="text-gray-500 text-sm">Lesson 2 of Beginner Basics</p>
+                            </div>
+                            <div class="mt-2 md:mt-0 text-sm text-gray-500">25% Complete</div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        <button class="bg-primary text-white px-6 py-2 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Continue Learning</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <a href="#" class="text-2xl font-['Pacifico'] text-white mb-4 inline-block">SignWave</a>
+                    <p class="text-gray-400 mb-6">Making sign language learning accessible, interactive, and fun for everyone.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition w-10 h-10 flex items-center justify-center rounded-full bg-gray-800">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition w-10 h-10 flex items-center justify-center rounded-full bg-gray-800">
+                            <i class="ri-twitter-x-fill"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition w-10 h-10 flex items-center justify-center rounded-full bg-gray-800">
+                            <i class="ri-instagram-fill"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition w-10 h-10 flex items-center justify-center rounded-full bg-gray-800">
+                            <i class="ri-youtube-fill"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Lessons</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Practice</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Community</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Subscribe to Our Newsletter</h3>
+                    <p class="text-gray-400 mb-4">Get the latest updates, lessons and tips delivered to your inbox.</p>
+                    <form class="mb-4">
+                        <div class="flex">
+                            <input type="email" placeholder="Your email address" class="w-full px-4 py-2 rounded-l-button text-gray-900 border-none focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            <button type="submit" class="bg-primary text-white px-4 py-2 rounded-r-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Subscribe</button>
+                        </div>
+                    </form>
+                    <div class="flex items-center space-x-2 text-sm text-gray-400">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-shield-check-line"></i>
+                        </div>
+                        <span>We respect your privacy</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-500 text-sm mb-4 md:mb-0">© 2025 SignWave. All rights reserved.</p>
+                    <div class="flex items-center space-x-6">
+                        <div class="flex items-center">
+                            <span class="text-gray-500 text-sm mr-3">Language:</span>
+                            <div class="relative">
+                                <button class="flex items-center text-gray-400 hover:text-white">
+                                    <span>English</span>
+                                    <div class="w-4 h-4 flex items-center justify-center ml-1">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex space-x-3">
+                            <div class="w-8 h-5 flex items-center justify-center">
+                                <i class="ri-visa-fill ri-lg"></i>
+                            </div>
+                            <div class="w-8 h-5 flex items-center justify-center">
+                                <i class="ri-mastercard-fill ri-lg"></i>
+                            </div>
+                            <div class="w-8 h-5 flex items-center justify-center">
+                                <i class="ri-paypal-fill ri-lg"></i>
+                            </div>
+                            <div class="w-8 h-5 flex items-center justify-center">
+                                <i class="ri-apple-fill ri-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./main.js"></script>
+</body>
+</html>
+
+
